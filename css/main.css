@@ -2,3 +2,59 @@
  * main.css
  * v 0.1
  */
+
+/* Fonts
+   ========================================================================== */
+
+/* Base options
+   ========================================================================== */
+body { font-family: Arial, sans-serif; font-size: 14px; color: black; background-color: white; }
+
+/* visuallyhidden by Richard Kalehoff
+   ========================================================================== */
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap; }
+
+/* Header
+   ========================================================================== */
+header { background-color: #2e3d49; border-bottom: 1px solid #E0E0E0; -webkit-box-shadow: 0px 3px 10px 0px rgba(224,224,224,1); 
+-moz-box-shadow: 0px 3px 10px 0px rgba(224,224,224,1); box-shadow: 0px 3px 10px 0px rgba(224,224,224,1); }
+header #header-inner { margin-bottom: 25px; }
+header #header-inner h1 { margin: 0px; padding: 30px 0px; font-weight: normal; color: white; }
+
+/**
+ * Form
+ */
+
+/**
+ * form base box
+ */
+form #form-base { display: flex; flex-wrap: wrap; margin-bottom: 25px; }
+form #city { flex-grow: 1; border: none; margin-right: 1.5em; padding: 1.25em 2em; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+form #submit { background-color: #15c26b; border: none; color: #ffffff; cursor: pointer; padding: 1em 4em;
+text-transform: uppercase; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+form #submit:hover { background-color: #12a159; }
+
+/**
+ * form options box
+ */
+form #form-options { display: flex; flex-wrap: wrap; }
+
+/**
+ * common radio
+ */
+.common-radio { display: block; /* background-color: tomato; */ text-align: center; }
+.common-radio input { display: none; }
+.common-radio span { display: block; width: 80px; background-color: #2e3d49; color: #ffffff; cursor: pointer; padding: 0.2em 0em; margin-right: 0.5em;
+border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+.common-radio span:hover { background-color: #12a159; }
+
+/**
+ * @media
+ */
+@media screen and (min-width: 181px) {
+}
+@media screen and (min-width: 601px) {
+}
+@media screen and (min-width: 1080px) {
+	#header-inner { width: 1080px; margin-left: auto; margin-right: auto; }
+}

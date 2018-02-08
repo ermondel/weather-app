@@ -12,14 +12,49 @@
 <body>
 
 <header>
-	<form action="#" id="form">
-		<input type="text" name="city" id="search-loc">
-		<input type="submit" value="Submit" id="submit">
-	</form>
+	<div id="header-inner">
+		<h1>Weather forecast for the city up to 16 days</h1>
+		<form action="#" id="form">
+
+			<div id="form-base">
+				<label for="city" class="visuallyhidden">Choose the city of your interest</label>
+				<input type="text" name="city" id="city">
+				<input type="submit" value="Submit" id="submit">
+			</div>
+
+			<div id="form-options">
+				<label class="common-radio">
+            		<input type="radio" required name="period" value="day">
+            		<span>day</span>
+        		</label>
+        		<label class="common-radio">
+            		<input type="radio" required name="period" value="3days">
+            		<span>3 days</span>
+        		</label>
+        		<label class="common-radio">
+            		<input type="radio" required name="period" value="week">
+            		<span>week</span>
+        		</label>
+        		<label class="common-radio">
+            		<input type="radio" required name="period" value="2weeks">
+            		<span>2 weeks</span>
+        		</label>
+
+        		<label class="common-radio">
+            		<input type="radio" required name="unit" value="celsius">
+            		<span>Celsius</span>
+        		</label>
+        		<label class="common-radio">
+            		<input type="radio" required name="unit" value="fahrenheit">
+            		<span>Fahrenheit</span>
+        		</label>
+        	</div>
+		</form>
+	</div>
 </header>
 
 <main>
-	Main
+	<div style="height: 500px;">Main</div>
 </main>
 
 <footer>
