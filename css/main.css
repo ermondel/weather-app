@@ -1,6 +1,6 @@
 /**
  * main.css
- * v 0.1
+ * v 0.3
  */
 
 /* Fonts
@@ -63,3 +63,39 @@ text-transform: uppercase; border-radius: 4px; -moz-border-radius: 4px; -webkit-
 @media screen and (min-width: 1080px) {
 	header #header-inner { width: 1080px; }
 }
+
+/* Content
+   ========================================================================== */
+.forecasts { width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 50px; /* background-color: tomato; */ }
+.forecast { padding: 23px; border: 1px solid #E0E0E0; max-width: 300px; font-size: 1.2em; margin-bottom: 25px;
+	-webkit-border-radius: 5px;
+	   -moz-border-radius: 5px;
+	        border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+	   -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+	        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+.forecast:hover { background-color: #f7f7f7; }
+.forecast .forecast-date { font-size: 0.7em; width: 33%; float: left; padding-top: 0.3em; color: green; }
+.forecast .forecast-description { width: 67%; float: left; margin-bottom: 15px; text-align: right; color: #516b78; }
+.forecast .forecast-img { width: 40%; float: left; margin-bottom: 15px; }
+.forecast .forecast-temp-avg { width: 60%; float: left; margin-bottom: 15px; text-align: right; color: darkcyan; font-size: 1.6em; }
+.forecast .fl { width: 100%; overflow: hidden; margin-bottom: 5px; color: #767676; }
+.forecast .fv { display: block; float: right; color: #516b78; text-align: right; }
+
+/**
+ * @media
+ */
+@media screen and (min-width: 745px) {
+	.forecasts { flex-flow: row wrap; }
+	.forecast { margin: 0px 12px 25px 12px; }
+}
+@media screen and (min-width: 1080px) {
+	.forecasts { width: 1080px; margin-left: auto; margin-right: auto; }
+	.forecast { margin: 0px 12px 25px 0px; }
+}
+
+/* Errors messages
+   ========================================================================== */
+.error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; 
+background: url('../img/error.png') no-repeat top center; }
