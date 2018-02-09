@@ -14,7 +14,7 @@
 <header>
 	<div id="header-inner">
 		<h1>Weather forecast for the city up to 2 weeks</h1>
-		<form action="#">
+		<form action="#" id="form">
 			<div class="left">
 				<label for="city" class="visuallyhidden">Choose the city of your interest</label>
 				<input type="text" name="city" id="city" placeholder="e.g. New York" required>
@@ -22,19 +22,19 @@
 				<div id="options">
 					<div id="options-period">
 						<label class="common-radio">
-            				<input type="radio" required name="period" value="day">
+            				<input type="radio" required name="period" value="1">
             				<span>day</span>
         				</label>
         				<label class="common-radio">
-            				<input type="radio" required name="period" value="3days">
+            				<input type="radio" required name="period" value="3">
             				<span>3 days</span>
         				</label>
         				<label class="common-radio">
-            				<input type="radio" required name="period" value="week" checked>
+            				<input type="radio" required name="period" value="7" checked>
             				<span>week</span>
         				</label>
         				<label class="common-radio">
-            				<input type="radio" required name="period" value="2weeks">
+            				<input type="radio" required name="period" value="14">
             				<span>2 weeks</span>
         				</label>
         			</div>
@@ -59,7 +59,9 @@
 	</div>
 </header>
 
-<main>
+<main id="main">
+    <div class="error">No forecast available.</div>
+    <!--
 	<div class="forecasts">
         <div class="forecast">
             <div class="forecast-date">08 February 2018</div>
@@ -145,9 +147,10 @@
             <div class="forecast-wind_spd fl">Wind <span class="fv">northeast, 45 m/s</span></div>
         </div>
     </div>
+    -->
 </main>
 
-<!-- <div class="error">No forecast available.</div> -->
+
 <!-- <footer></footer> -->
 
 <script src="js/app.js"></script>

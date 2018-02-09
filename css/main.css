@@ -97,5 +97,7 @@ text-transform: uppercase; border-radius: 4px; -moz-border-radius: 4px; -webkit-
 
 /* Errors messages
    ========================================================================== */
+.city-val-error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; 
+background: url('../img/error-city-name.png') no-repeat top center; }   
 .error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; 
 background: url('../img/error.png') no-repeat top center; }
