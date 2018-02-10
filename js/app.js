@@ -162,7 +162,7 @@ function handlerOnsubmit(e) {
 
     // alpha
 	const queryString = ['city=' + cityInput.value, 'key=351954d3a30a4b60ad716f1c73cc43ee'];
-	fetch(`http://api.weatherbit.io/v2.0/forecast/daily?${queryString.join('&')}`)
+	fetch(`https://api.weatherbit.io/v2.0/forecast/daily?${queryString.join('&')}`)
 	.then(response => response.json())
 	.then(function(data) {
 		// console.log('server ...');
