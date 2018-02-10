@@ -1,6 +1,9 @@
 /**
- * ver alpha 0.5
+ * ver alpha 0.87
  */
+
+// app name
+const APPNAME = 'Weather app';
 
 // cache element expiry date (Number)
 const CACHEEXPIRY = 43200;
@@ -16,25 +19,11 @@ const cityInput = document.getElementById('city');
 // main box
 const main = document.getElementById('main');
 
-// html template for city name validate error
-const templCityValError = '<div class="city-val-error">City name must be correct.<br> Only letters, spaces and hyphens are allowed.</div>';
-
-// Stores the previous input city name value (String)
-let cityInputBuffer = '';
-
-/**
- *	{
- *		city_name:    (String) e.g. Kiev,
- *		lon:          (String) e.g. 30.5238,
- *		timezone:     (String) e.g. Europe/Kiev,
- *		lat:          (String) e.g. 50.45466,
- *		country_code: (String) e.g. UA,
- *		state_code:   (String) e.g. 12
- *      timestamp:    (Number) cache entry date
- *		forecast:     (Object) data depending on the specific API
- *	}
- */
+// cache (Array)
 let cache = [];
+
+// current forecast to display (Object)
+let forecastToDisplay;
 
 // forecast period in days (Number)
 let forecastPeriod = 7;
@@ -47,13 +36,13 @@ let forecastUnit = 'celsius';
  *  key e.g. 'city_name'
  *  value e.g. 'Kiev'
  */
-function getCache(key, value) {
+function getFromCache(key, value) {
 	if (cache.length > 0 && key && value) {
 		for (let i = 0; i < cache.length; i++) {
 			if (cache[i].hasOwnProperty(key) && cache[i][key].toLowerCase() === value.toLowerCase()) {
 				// check expiry date
 				if ((Math.floor(Date.now() / 1000) - cache[i].timestamp) < CACHEEXPIRY) {
-					return cache[i].forecast;
+					return cache[i];
 				} else {
 					cache.splice(i, 1);
 					return 0;
@@ -65,19 +54,76 @@ function getCache(key, value) {
 }
 
 /**
- * validate city name (String)
- * return (Boolean)
+ * Validate city name (String)
+ * return Boolean
  */
 function validateCityName(str) {
 	return str.search(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/) >= 0 ? true : false;
 }
 
 /**
- * set html content on page inside main box
+ * Convert celsius to fahrenheit
+ * return Number
  */
-function addOnPage(content) {
+function celsiusToFahrenheit(celsius) {
+	return celsius * 9/5 + 32;
+}
+
+/**
+ * Format date like 08 February 2018 from timestamp
+ * return String
+ */
+function formatDate(timestamp) {
+	if (!timestamp) return '';
+	const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+	const date = new Date(timestamp*1000);
+	return date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+}
+
+/**
+ * Forecast to html
+ * return String
+ */
+function displayForecasts() {
+	if (forecastToDisplay && forecastToDisplay.forecasts) {
+		//
+		cityInput.value = forecastToDisplay.city_name;
+		document.title  = APPNAME + ' (' + forecastToDisplay.city_name + ') ';
+		//
+		const limit = forecastToDisplay.forecasts.length <= forecastPeriod ? forecastToDisplay.forecasts.length : forecastPeriod;
+		main.innerHTML = '';
+		main.insertAdjacentHTML('afterbegin', '<div class="forecasts">' + forecastToDisplay.forecasts.slice(0, limit).map(viewHtmlForecast).join('') + '</div>');
+	}
+}
+
+/**
+ * Display error
+ * return Boolean
+ */
+function displayError(error_html) {
+	forecastToDisplay = null;
+	document.title  = APPNAME;
 	main.innerHTML = '';
-	main.insertAdjacentHTML('afterbegin', content);
+	main.insertAdjacentHTML('afterbegin', error_html);
+	return true;
+}
+
+/**
+ * callback
+ * view html forecast
+ */
+function viewHtmlForecast(data) {
+	return '<div class="forecast">'+
+	'<div class="forecast-date">' + formatDate(data.timestamp) + '</div>'+
+	'<div class="forecast-description">' + data.description + '</div>'+
+	'<div class="forecast-img"><img src="img/' + data.icon + '.png" alt="' + data.description + '"></div>'+
+	'<div class="forecast-temp-avg">' + data.temp_avg_c + ' C°</div>'+
+	'<div class="forecast-max-temp-app fl">Feels like (at max) <span class="fv">' + data.temp_max_app_c + ' C°</span></div>'+
+	'<div class="forecast-min-temp-app fl">Feels like (at min) <span class="fv">' + data.temp_min_app_c + ' C°</span></div>'+
+	'<div class="forecast-pres fl">Pressure <span class="fv">' + data.pres + ' mb</span></div>'+
+	'<div class="forecast-rh fl">Humidity <span class="fv">' + data.humidity + ' %</span></div>'+
+	'<div class="forecast-wind_spd fl">Wind <span class="fv">' + data.wind_direction + ', ' + data.wind_speed + ' m/s</span></div>'+
+	'</div>';
 }
 
 /**
@@ -88,6 +134,7 @@ function handlerOnchange(e) {
 	if (e.target.type === 'radio') {
 		if (e.target.name === 'period') forecastPeriod = e.target.value
 		if (e.target.name === 'unit') forecastUnit = e.target.value
+		displayForecasts();
 	}
 }
 
@@ -98,21 +145,101 @@ function handlerOnsubmit(e) {
 	// prevent default behavior
 	e.preventDefault();
 
-	// do nothing if the user entered the same value
-	if (cityInput.value === cityInputBuffer) {
-		return;
-	} else {
-		cityInputBuffer = cityInput.value;
-	}
-
-	// show error if the user entered an incorrect city name
+	// display error if the user entered an incorrect city name
 	if (!validateCityName(cityInput.value)) {
-		addOnPage(templCityValError);
-		return;
+		return displayError('<div class="city-val-error">City name must be correct.<br> Only letters, spaces and hyphens are allowed.</div>');
 	}
 
-	// OK
-	addOnPage('OK');
+	// check entry in the cache
+	let forecast = getFromCache('city_name', cityInput.value);
+
+	// if not found, request a server and add to cache
+	if (!forecast) {
+		forecast = requestWeatherbit(cityInput.value);
+		if (forecast && forecast.forecasts && forecast.forecasts.length > 0) {
+			cache.push(forecast);
+		} else {
+			return displayError('<div class="error">No forecast available.</div>');
+		}
+	} else {
+		console.log('from cache ...');
+	}
+	
+	forecastToDisplay = forecast; // set forecast to display as current
+	displayForecasts();           // display forecast
 }
 
-// Debug --------------------------------------------------------------------------------------------------------------- // 
+// weatherbit.io ------------------------------------------------------------------------------------------------------- // 
+
+/**
+ *  ... in process ...
+ *	{
+ *		city_name:    (String) e.g. Kiev,
+ *		lon:          (String) e.g. 30.5238,
+ *		timezone:     (String) e.g. Europe/Kiev,
+ *		lat:          (String) e.g. 50.45466,
+ *		country_code: (String) e.g. UA,
+ *		state_code:   (String) e.g. 12
+ *      timestamp:    (Number) cache entry date
+ *		forecasts:    (Array) 
+ *	}
+ */
+function requestWeatherbit(location) {
+	// fetch
+	let pr = {};
+
+	if (location === 'kiev') {
+		pr = debug_kiev;
+	} else if (location === 'lviv') {
+		pr = debug_lviv;
+	} else if (location === 'odessa') {
+		pr = debug_odessa;
+	} else {
+		return pr;
+	}
+
+	// convert forecasts from native format json to weather-app format json
+	// forecasts list
+	let forecasts = [];
+	for (const forecast of pr.data) {
+		//
+		let icon = '';
+		if ('c01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-01';
+		if ('c03d,c02d,c02d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-02';
+		if ('c04d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-03';
+		if ('a06d,a05d,a04d,a03d,a02d,a01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-04';
+		if ('u00d,r06d,r05d,r04d,f01d,r03d,r02d,r01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-05';
+		if ('t05d,t04d,t04d,t04d,t03d,t02d,t01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-06';
+		if ('s06d,s02d,s01d,s05d,s05d,s04d,s03d,s02d,s01d,d03d,d02d,d01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-07';
+		//
+		forecasts.push({
+			timestamp:      forecast.ts,
+			description:    forecast.weather.description,
+			pres:           forecast.pres,
+			humidity:       forecast.rh,
+			wind_direction: forecast.wind_cdir_full,
+			wind_speed:     forecast.wind_spd,
+			temp_avg_c:     forecast.temp,
+			temp_max_app_c: forecast.app_max_temp,
+			temp_min_app_c: forecast.app_min_temp,
+			temp_avg_f:     celsiusToFahrenheit(forecast.temp),
+			temp_max_app_f: celsiusToFahrenheit(forecast.app_max_temp),
+			temp_min_app_f: celsiusToFahrenheit(forecast.app_min_temp),
+			icon:           icon,
+		});
+	}
+	// forecast description
+	const entry = {
+		city_name:    pr.city_name,
+ 		lon:          pr.lon,
+ 		timezone:     pr.timezone,
+ 		lat:          pr.lat,
+ 		country_code: pr.country_code,
+ 		state_code:   pr.state_code,
+ 		timestamp:    Math.floor(Date.now() / 1000),
+ 		forecasts:    forecasts
+	};
+
+	// console.log(entry.forecasts);
+	return entry;
+}
