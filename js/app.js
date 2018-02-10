@@ -1,5 +1,5 @@
 /**
- * ver alpha 0.87
+ * ver beta 0.5
  */
 
 // app name
@@ -153,93 +153,83 @@ function handlerOnsubmit(e) {
 	// check entry in the cache
 	let forecast = getFromCache('city_name', cityInput.value);
 
-	// if not found, request a server and add to cache
-	if (!forecast) {
-		forecast = requestWeatherbit(cityInput.value);
+	if (forecast) {
+		forecastToDisplay = forecast;
+		displayForecasts();
+		// console.log('from cache ...');
+		return;
+	}
+
+    // alpha
+	const queryString = ['city=' + cityInput.value, 'key=351954d3a30a4b60ad716f1c73cc43ee'];
+	fetch(`http://api.weatherbit.io/v2.0/forecast/daily?${queryString.join('&')}`)
+	.then(response => response.json())
+	.then(function(data) {
+		// console.log('server ...');
+		let forecast = convertWeatherbit(data);
 		if (forecast && forecast.forecasts && forecast.forecasts.length > 0) {
 			cache.push(forecast);
+			forecastToDisplay = forecast;
+			displayForecasts();
 		} else {
-			return displayError('<div class="error">No forecast available.</div>');
+			displayError('<div class="error">No forecast available.</div>');
 		}
-	} else {
-		console.log('from cache ...');
-	}
-	
-	forecastToDisplay = forecast; // set forecast to display as current
-	displayForecasts();           // display forecast
+	})
+	.catch(function(e) {
+		console.log(e);
+		displayError('<div class="error">No forecast available.</div>');
+	});
 }
 
 // weatherbit.io ------------------------------------------------------------------------------------------------------- // 
 
 /**
- *  ... in process ...
- *	{
- *		city_name:    (String) e.g. Kiev,
- *		lon:          (String) e.g. 30.5238,
- *		timezone:     (String) e.g. Europe/Kiev,
- *		lat:          (String) e.g. 50.45466,
- *		country_code: (String) e.g. UA,
- *		state_code:   (String) e.g. 12
- *      timestamp:    (Number) cache entry date
- *		forecasts:    (Array) 
- *	}
+ * request success Weatherbit
  */
-function requestWeatherbit(location) {
-	// fetch
-	let pr = {};
+function convertWeatherbit(pr) {
+	if (pr.data && pr.data.length > 0) {
+		// convert forecasts from native format json to weather-app format json
+		// forecasts list
+		let forecasts = [];
+		for (const forecast of pr.data) {
+			//
+			let icon = '';
+			if ('c01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-01';
+			if ('c03d,c02d,c02d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-02';
+			if ('c04d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-03';
+			if ('a06d,a05d,a04d,a03d,a02d,a01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-04';
+			if ('u00d,r06d,r05d,r04d,f01d,r03d,r02d,r01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-05';
+			if ('t05d,t04d,t04d,t04d,t03d,t02d,t01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-06';
+			if ('s06d,s02d,s01d,s05d,s05d,s04d,s03d,s02d,s01d,d03d,d02d,d01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-07';
+			//
+			forecasts.push({
+				timestamp:      forecast.ts,
+				description:    forecast.weather.description,
+				pres:           forecast.pres,
+				humidity:       forecast.rh,
+				wind_direction: forecast.wind_cdir_full,
+				wind_speed:     forecast.wind_spd,
+				temp_avg_c:     forecast.temp,
+				temp_max_app_c: forecast.app_max_temp,
+				temp_min_app_c: forecast.app_min_temp,
+				temp_avg_f:     celsiusToFahrenheit(forecast.temp),
+				temp_max_app_f: celsiusToFahrenheit(forecast.app_max_temp),
+				temp_min_app_f: celsiusToFahrenheit(forecast.app_min_temp),
+				icon:           icon,
+			});
+		}
 
-	if (location === 'kiev') {
-		pr = debug_kiev;
-	} else if (location === 'lviv') {
-		pr = debug_lviv;
-	} else if (location === 'odessa') {
-		pr = debug_odessa;
-	} else {
-		return pr;
+		// 
+		return {
+			city_name:    pr.city_name,
+ 			lon:          pr.lon,
+ 			timezone:     pr.timezone,
+ 			lat:          pr.lat,
+ 			country_code: pr.country_code,
+ 			state_code:   pr.state_code,
+ 			timestamp:    Math.floor(Date.now() / 1000),
+ 			forecasts:    forecasts
+		};
 	}
-
-	// convert forecasts from native format json to weather-app format json
-	// forecasts list
-	let forecasts = [];
-	for (const forecast of pr.data) {
-		//
-		let icon = '';
-		if ('c01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-01';
-		if ('c03d,c02d,c02d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-02';
-		if ('c04d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-03';
-		if ('a06d,a05d,a04d,a03d,a02d,a01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-04';
-		if ('u00d,r06d,r05d,r04d,f01d,r03d,r02d,r01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-05';
-		if ('t05d,t04d,t04d,t04d,t03d,t02d,t01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-06';
-		if ('s06d,s02d,s01d,s05d,s05d,s04d,s03d,s02d,s01d,d03d,d02d,d01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-07';
-		//
-		forecasts.push({
-			timestamp:      forecast.ts,
-			description:    forecast.weather.description,
-			pres:           forecast.pres,
-			humidity:       forecast.rh,
-			wind_direction: forecast.wind_cdir_full,
-			wind_speed:     forecast.wind_spd,
-			temp_avg_c:     forecast.temp,
-			temp_max_app_c: forecast.app_max_temp,
-			temp_min_app_c: forecast.app_min_temp,
-			temp_avg_f:     celsiusToFahrenheit(forecast.temp),
-			temp_max_app_f: celsiusToFahrenheit(forecast.app_max_temp),
-			temp_min_app_f: celsiusToFahrenheit(forecast.app_min_temp),
-			icon:           icon,
-		});
-	}
-	// forecast description
-	const entry = {
-		city_name:    pr.city_name,
- 		lon:          pr.lon,
- 		timezone:     pr.timezone,
- 		lat:          pr.lat,
- 		country_code: pr.country_code,
- 		state_code:   pr.state_code,
- 		timestamp:    Math.floor(Date.now() / 1000),
- 		forecasts:    forecasts
-	};
-
-	// console.log(entry.forecasts);
-	return entry;
+	return {};
 }
