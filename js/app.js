@@ -1,5 +1,5 @@
 /**
- * ver beta 0.5
+ * ver beta 0.6
  */
 
 // app name
