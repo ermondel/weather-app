@@ -22,7 +22,7 @@ const main = document.getElementById('main');
 // cache (Array)
 let cache = [];
 
-// current forecast to display (Object)
+// current forecast to display (Array/Object)
 let forecastToDisplay;
 
 // forecast period in days (Number)
@@ -30,6 +30,17 @@ let forecastPeriod = 7;
 
 // forecast unit (Celsius or Fahrenheit) (String)
 let forecastUnit = 'celsius';
+
+// request URL
+let reqURL = 'api.weatherbit.io/v2.0/forecast/daily';
+
+// request query string
+let reqKey = '351954d3a30a4b60ad716f1c73cc43ee';
+
+// request protocol
+let reqProtocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
+
+
 
 /**
  * Return first found obj or 0
@@ -66,7 +77,7 @@ function validateCityName(str) {
  * return Number
  */
 function celsiusToFahrenheit(celsius) {
-	return celsius * 9/5 + 32;
+	return (celsius * 9/5 + 32).toFixed(2);
 }
 
 /**
@@ -81,8 +92,12 @@ function formatDate(timestamp) {
 }
 
 /**
- * Forecast to html
- * return String
+ * Convert forecast from inner storage format to html
+ * @required properties
+ *  forecastToDisplay: inner storage (Array/Object)
+ *  forecastPeriod: forecast period in days (Number)
+ *  APPNAME: app name to set in html page title
+ * no return
  */
 function displayForecasts() {
 	if (forecastToDisplay && forecastToDisplay.forecasts) {
@@ -109,19 +124,25 @@ function displayError(error_html) {
 }
 
 /**
- * callback
- * view html forecast
+ * Map callback for display html forecast
+ * @required properties
+ *  forecastUnit: Celsius or Fahrenheit (String)
+ * return String
  */
 function viewHtmlForecast(data) {
+	let temperature_average      = forecastUnit === 'celsius' ? data.temp_avg_c +     ' °C' : data.temp_avg_f     + ' °F';
+	let temperature_max_apparent = forecastUnit === 'celsius' ? data.temp_max_app_c + ' °C' : data.temp_max_app_f + ' °F';
+	let temperature_min_apparent = forecastUnit === 'celsius' ? data.temp_min_app_c + ' °C' : data.temp_min_app_f + ' °F';
+
 	return '<div class="forecast">'+
-	'<div class="forecast-date">' + formatDate(data.timestamp) + '</div>'+
-	'<div class="forecast-description">' + data.description + '</div>'+
-	'<div class="forecast-img"><img src="img/' + data.icon + '.png" alt="' + data.description + '"></div>'+
-	'<div class="forecast-temp-avg">' + data.temp_avg_c + ' C°</div>'+
-	'<div class="forecast-max-temp-app fl">Feels like (at max) <span class="fv">' + data.temp_max_app_c + ' C°</span></div>'+
-	'<div class="forecast-min-temp-app fl">Feels like (at min) <span class="fv">' + data.temp_min_app_c + ' C°</span></div>'+
+	'<div class="forecast-date">'              + formatDate(data.timestamp) + '</div>'+
+	'<div class="forecast-description">'       + data.description           + '</div>'+
+	'<div class="forecast-img"><img src="img/' + data.icon                  + '.png" alt="' + data.description + '"></div>'+
+	'<div class="forecast-temp-avg">'          + temperature_average        + '</div>'+
+	'<div class="forecast-max-temp-app fl">Feels like (at max) <span class="fv">' + temperature_max_apparent + '</span></div>'+
+	'<div class="forecast-min-temp-app fl">Feels like (at min) <span class="fv">' + temperature_min_apparent + '</span></div>'+
 	'<div class="forecast-pres fl">Pressure <span class="fv">' + data.pres + ' mb</span></div>'+
-	'<div class="forecast-rh fl">Humidity <span class="fv">' + data.humidity + ' %</span></div>'+
+	'<div class="forecast-rh fl">Humidity <span class="fv">'   + data.humidity + ' %</span></div>'+
 	'<div class="forecast-wind_spd fl">Wind <span class="fv">' + data.wind_direction + ', ' + data.wind_speed + ' m/s</span></div>'+
 	'</div>';
 }
@@ -132,8 +153,8 @@ function viewHtmlForecast(data) {
  */
 function handlerOnchange(e) {
 	if (e.target.type === 'radio') {
-		if (e.target.name === 'period') forecastPeriod = e.target.value
-		if (e.target.name === 'unit') forecastUnit = e.target.value
+		if (e.target.name === 'period') forecastPeriod = e.target.value;
+		if (e.target.name === 'unit') forecastUnit = e.target.value;
 		displayForecasts();
 	}
 }
@@ -160,11 +181,11 @@ function handlerOnsubmit(e) {
 		return;
 	}
 
-    // alpha
-	const queryString = ['city=' + cityInput.value, 'key=351954d3a30a4b60ad716f1c73cc43ee'];
-	fetch(`https://api.weatherbit.io/v2.0/forecast/daily?${queryString.join('&')}`)
-	.then(response => response.json())
-	.then(function(data) {
+    // construct a query
+    const query = reqProtocol + '//' + reqURL + '?key=' + reqKey + '&lang=en&units=M&days=16&city=' + cityInput.value;
+
+	// make query
+	fetch(query).then(response => response.json()).then(function(data) {
 		// console.log('server ...');
 		let forecast = convertWeatherbit(data);
 		if (forecast && forecast.forecasts && forecast.forecasts.length > 0) {
@@ -174,8 +195,7 @@ function handlerOnsubmit(e) {
 		} else {
 			displayError('<div class="error">No forecast available.</div>');
 		}
-	})
-	.catch(function(e) {
+	}).catch(function(e) {
 		console.log(e);
 		displayError('<div class="error">No forecast available.</div>');
 	});
