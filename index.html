@@ -19,7 +19,7 @@
                 <div id="search-box">
 				    <label for="city" class="visuallyhidden">Choose the city of your interest</label>
 				    <input type="text" name="city" id="city" class="sb" placeholder="e.g. New York" required>
-                    <button id="favorite-add-btn" class="sb" title="Add to favorites">&#9733;</button>
+                    <button id="keep-btn" class="sb"></button>
                 </div>
 
 				<div id="options">
@@ -62,98 +62,87 @@
 	</div>
 </header>
 
-<!--
-<div id="favorites-wrapper">
-    <div class="favorites">
-        <div class="favorite"><span class="favorite-icon" title="Delete from favorites">&#9733;</span> <span class="favorite-city_name">Kiev</span></div>
-        <div class="favorite"><span class="favorite-icon" title="Delete from favorites">&#9733;</span> <span class="favorite-city_name">San Francisco</span></div>
-        <div class="favorite"><span class="favorite-icon" title="Delete from favorites">&#9733;</span> <span class="favorite-city_name">Lviv</span></div>
-        <div class="favorite"><span class="favorite-icon" title="Delete from favorites">&#9733;</span> <span class="favorite-city_name">Odessa</span></div>
-        <div class="favorite"><span class="favorite-icon" title="Delete from favorites">&#9733;</span> <span class="favorite-city_name">Stratford-upon-Avon</span></div>
-        <div class="favorite"><span class="favorite-icon" title="Delete from favorites">&#9733;</span> <span class="favorite-city_name">Truth or Consequences</span></div>
-        <div class="favorite"><span class="favorite-icon" title="Delete from favorites">&#9733;</span> <span class="favorite-city_name">Los Angeles</span></div>
-    </div>
-</div>
--->
-
 <main id="main"></main>
 
 <aside>
     <div id="aside-inner">
         <h3>&#9733; Favorites</h3>
-        <ul>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-        </ul>
+        <div id="keep-favotite-box"></div>
 
         <h3>&#10226; History</h3>
-        <ul>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-            <!--<li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>
-            <li>Kiev</li>
-            <li>San Francisco</li>
-            <li>Lviv</li>
-            <li>Odessa</li>
-            <li>Stratford-upon-Avon</li>
-            <li>Truth or Consequences</li>
-            <li>Los Angeles</li>-->
-        </ul>
+        <div id="keep-history-box"></div>
     </div>
     <div id="main-btn"><span class="out">&#10097;</span><span class="over">&#10096;</span></div>
 </aside>
 
-<script src="js/app.js"></script>
+<!-- <script src="js/app.js"></script> -->
+<script src="js/app/Keeper.js"></script>
+<script type="text/javascript">
+    // unit tests -----------------------------------------------------------------------------
+
+    Keeper.initKeeper('weather-app');
+    // console.log(Keeper.KeeperData);
+
+    // test
+    const kiev = {
+        city_name: 'Kiev',
+        lon: '111',
+        timezone: 'qwe',
+        lat: '222',
+        country_code: 'UA',
+        state_code: '01',
+    };
+    const lviv = {
+        city_name: 'Lviv',
+        lon: '333',
+        timezone: 'asd',
+        lat: '444',
+        country_code: 'UA',
+        state_code: '02',
+    };
+    const san_francisco = {
+        city_name: 'San Francisco',
+        lon: '555',
+        timezone: 'zxc',
+        lat: '666',
+        country_code: 'UA',
+        state_code: '03',
+    };
+
+    /*
+    Keeper.addToKeeper(kiev, 'favorites');
+    Keeper.addToKeeper(lviv, 'favorites');
+    Keeper.addToKeeper(san_francisco, 'favorites');
+
+    Keeper.addToKeeper(kiev, 'history');
+    Keeper.addToKeeper(lviv, 'history');
+    Keeper.addToKeeper(san_francisco, 'history');
+    */
+    /*
+    console.log(Keeper.searchInKeeper('favorites', 'city_name', 'kiev'));
+    console.log(Keeper.searchInKeeper('favorites', 'lon', '333', 'lat', '444'));
+    console.log(Keeper.searchInKeeper('favorites', 'lat', '666'));
+    console.log(Keeper.searchInKeeper('favorites', 'city_name', 'odessa'));
+    */
+    // console.log(Keeper.checkInFavoriteKeeper(kiev));
+    // console.log(Keeper.checkInFavoriteKeeper(lviv));
+    // console.log(Keeper.checkInFavoriteKeeper(san_francisco));
+    /*
+    Keeper.toggleFavorite(kiev);
+    console.log(Keeper.KeeperData);
+    */
+    /*
+    Keeper.toggleFavorite(lviv);
+    console.log(Keeper.KeeperData);
+    */
+    /*
+    Keeper.toggleFavorite(san_francisco);
+    console.log(Keeper.KeeperData);
+    */
+    // Keeper.displayAllKeep();
+
+    // Keeper.clearAllKeep();
+    
+</script>
 </body>
 </html>
