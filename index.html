@@ -20,7 +20,7 @@
 				    <label for="city" class="visuallyhidden">Choose the city of your interest</label>
 				    <input type="text" name="city" id="city" class="sb" placeholder="e.g. New York" required>
                     <label id="favorite" class="sb">
-                        <input type="checkbox" name="favorite" value="1">
+                        <input type="checkbox" name="favorite" value="1" id="keep-checkbox">
                         <span></span>
                         <span class="visuallyhidden">favorite</span>
                     </label>
@@ -71,31 +71,18 @@
 <aside>
     <div id="aside-inner">
         <h3>&#9733; Favorites</h3>
-        <div id="keep-favotite-box">
-            <ul>
-                <li>Kiev</li>
-                <li>Lviv</li>
-                <li>San Francisco</li>
-            </ul>
-        </div>
+        <div id="keep-favotite-box"></div>
 
         <h3>&#10226; History</h3>
-        <div id="keep-history-box">
-            <ul>
-                <li>Kiev</li>
-                <li>Lviv</li>
-                <li>San Francisco</li>
-            </ul>
-        </div>
+        <div id="keep-history-box"></div>
     </div>
     <div id="main-btn"><span class="out">&#10097;</span><span class="over">&#10096;</span></div>
 </aside>
 
-<!-- <script src="js/app.js"></script> -->
 <script src="js/app/Utils.js"></script>
 <script src="js/app/Keeper.js"></script>
 <script src="js/app/Weatherbit.js"></script>
+<script src="js/tests.js"></script>
 <script src="js/app/Weather.js"></script>
-<!-- <script src="js/tests.js"></script> -->
 </body>
 </html>

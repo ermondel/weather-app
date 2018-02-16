@@ -1,6 +1,6 @@
 /**
  * Keeper.js
- * version 0.9
+ * version 1.1
  * format for storing information about the city (Object)
  *  - city_name
  *  - lon
@@ -18,22 +18,27 @@ var Keeper = {
 		'favorites'   : [],
 		'history'     : [],
 	},
-	KeepFavoriteBtn : 'keep-btn',          // id of favorite button
+	KeepCheckbox    : 'keep-checkbox',     // id of checkbox favorite
 	KeepFavoriteBox : 'keep-favotite-box', // id of favorites box (the content is represented by a <ul> list)
 	KeepHistoryBox  : 'keep-history-box',  // id of history box (the content is represented by a <ul> list)
 
-	// init
+	/**
+	 * Init
+	 * k (String) KeeperKey prefix for keys names
+	 */
 	initKeeper(k) {
 		if (this.isKeeperAv()) {
 			this.KeeperKey = k;
 			this.loadKeeper('favorites');
 			this.loadKeeper('history');
-			this.setStateFavBtn();
 			this.displayAllKeep();
 		}
 	},
 
-	// load from local storage (favorites or history)
+	/**
+	 * Load from local storage to var
+	 * type (String) favorites or history
+	 */
 	loadKeeper(type) {
 		if (this.KeeperAv && this.KeeperData.hasOwnProperty(type)) {
 			let data = localStorage.getItem(this.KeeperKey+'-'+type);
@@ -43,7 +48,11 @@ var Keeper = {
 		}
 	},
 
-	// add city to local storage (favorites or history) if it is not there
+	/**
+	 * Add city to local storage (favorites or history) if it is not there
+	 * v (Object) city description in app native format
+	 * type (String) favorites or history
+	 */
 	addToKeeper(v, type) {
 		if (this.KeeperAv 
 			&& 
@@ -75,8 +84,10 @@ var Keeper = {
 		return -1;
 	},
 
-	// remove city from favorites in local storage if it is
-	// there, or add city to favorites in local storage
+	/**
+	 * Toggle city in local storage (favorites only)
+	 * v (Object) city description in app native format
+	 */
 	toggleFavorite(v) {
 		if (this.KeeperAv && v && v.city_name) {
 			const type = 'favorites';
@@ -84,68 +95,47 @@ var Keeper = {
 			
 			if (pos >= 0) {
 				this.KeeperData[type].splice(pos, 1);
-				this.setStateFavBtn('passive');
+				this.checkboxFavorite(false);
 			} else {
 				this.KeeperData[type].push(v);
-				this.setStateFavBtn('active');
+				this.checkboxFavorite(true);
 			}
 			localStorage.setItem(this.KeeperKey+'-'+type, JSON.stringify(this.KeeperData[type]));
 			this.displayKeep(type, this.toHtmlKeep(type));
 		}
 	},
 
-	// set favorite button to active state if city is in favorites
+	/**
+	 * Set checkbox favorite to active state if city is in favorites
+	 * v (Object) city description in app native format
+	 */
 	checkInFavoriteKeeper(v) {
 		if (v && v.city_name) {
 			if (this.searchInKeeper('favorites', 'city_name', v.city_name) >= 0) {
-				this.setStateFavBtn('active');
+				this.checkboxFavorite(true);
 				return true;
 			}
 		}
 		return false;
 	},
 
-	// set state (active or passive) of button favorite
-	// without state argument - the state (active or passive) is reset
-	setStateFavBtn(state) {
-		const elem = document.getElementById(this.KeepFavoriteBtn);
-		if (!elem) {
-			console.log('Keep:', 'favorite button not found on page.');
-			return false;
+	/**
+	 * Set the checked state of a checkbox favorite
+	 * state (Boolean)
+	 */
+	checkboxFavorite(state) {
+		const checkbox = document.getElementById(this.KeepCheckbox);
+		if (checkbox) {
+			checkbox.checked = state;
+		} else {
+			console.log('Keep:', 'checkbox favorite not found on page.');
 		}
-		const classes = elem.className.split(' ');
-		const posActive = classes.indexOf('active');
-		const posPassive = classes.indexOf('passive');
-
-		if (state === 'active') {
-			if (posActive < 0) {
-				if (posPassive < 0) {
-					classes.push(state);
-				} else {
-					classes[posPassive] = state;
-				}
-			}
-		}
-
-		if (state === 'passive') {
-			if (posPassive < 0) {
-				if (posActive < 0) {
-					classes.push(state);
-				} else {
-					classes[posActive] = state;
-				}
-			}
-		}
-
-		if (!state) {
-			if (posActive) classes[posActive] = '';
-			if (posPassive) classes[posPassive] = '';
-		}
-
-		document.getElementById(this.KeepFavoriteBtn).className = classes.join(' ').trim();
 	},
 
-	// favorites or history to html
+	/**
+	 * Convert favorites or history to html
+	 * type (String) favorites or history
+	 */
 	toHtmlKeep(type) {
 		if (this.KeeperData.hasOwnProperty(type) && this.KeeperData[type].length > 0) {
 			let res = this.KeeperData[type].slice().reverse().map(function(obj) {
@@ -156,7 +146,11 @@ var Keeper = {
 		return '';
 	},
 
-	// display favorites or history on page
+	/**
+	 * Display favorites or history on page
+	 * type (String) favorites or history
+	 * content (String) html
+	 */
 	displayKeep(type, content) {
 		if (type === 'favorites') {
 			const favoritesBox = document.getElementById(this.KeepFavoriteBox);
@@ -179,13 +173,18 @@ var Keeper = {
 		}
 	},
 
-	// display favorites and history on page
+	/**
+	 * Display favorites and history on page
+	 */
 	displayAllKeep() {
 		this.displayKeep('favorites', this.toHtmlKeep('favorites'));
 		this.displayKeep('history', this.toHtmlKeep('history'));
 	},
 
-	// clear favorites or history in local storage and on the page
+	/**
+	 * Clear favorites or history in local storage and on the page
+	 * type (String) favorites or history
+	 */
 	clearKeep(type) {
 		if (this.KeeperAv && this.KeeperData.hasOwnProperty(type)) {
 			localStorage.removeItem(this.KeeperKey+'-'+type);
@@ -193,13 +192,17 @@ var Keeper = {
 		}
 	},
 
-	// clear favorites and history in local storage and on the page
+	/**
+	 * Clear favorites and history in local storage and on the page
+	 */
 	clearAllKeep() {
 		this.clearKeep('favorites');
 		this.clearKeep('history');
 	},
 
-	// is local storage available?
+	/**
+	 * Is local storage available?
+	 */
 	isKeeperAv() {
 		if (this.KeeperAv !== null) return this.KeeperAv;
 		// from developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
