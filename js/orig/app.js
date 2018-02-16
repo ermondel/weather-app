@@ -31,17 +31,6 @@ let forecastPeriod = 7;
 // forecast unit (Celsius or Fahrenheit) (String)
 let forecastUnit = 'celsius';
 
-// request URL
-let reqURL = 'api.weatherbit.io/v2.0/forecast/daily';
-
-// request query string
-let reqKey = '351954d3a30a4b60ad716f1c73cc43ee';
-
-// request protocol
-let reqProtocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
-
-
-
 /**
  * Return first found obj or 0
  *  key e.g. 'city_name'
@@ -154,9 +143,6 @@ function handlerOnsubmit(e) {
 		return;
 	}
 
-    // construct a query
-    const query = reqProtocol + '//' + reqURL + '?key=' + reqKey + '&lang=en&units=M&days=16&city=' + cityInput.value;
-
 	// make query
 	fetch(query).then(response => response.json()).then(function(data) {
 		// console.log('server ...');
@@ -172,57 +158,4 @@ function handlerOnsubmit(e) {
 		console.log(e);
 		displayError('<div class="error">No forecast available.</div>');
 	});
-}
-
-// weatherbit.io ------------------------------------------------------------------------------------------------------- // 
-
-/**
- * request success Weatherbit
- */
-function convertWeatherbit(pr) {
-	if (pr.data && pr.data.length > 0) {
-		// convert forecasts from native format json to weather-app format json
-		// forecasts list
-		let forecasts = [];
-		for (const forecast of pr.data) {
-			//
-			let icon = '';
-			if ('c01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-01';
-			if ('c03d,c02d,c02d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-02';
-			if ('c04d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-03';
-			if ('a06d,a05d,a04d,a03d,a02d,a01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-04';
-			if ('u00d,r06d,r05d,r04d,f01d,r03d,r02d,r01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-05';
-			if ('t05d,t04d,t04d,t04d,t03d,t02d,t01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-06';
-			if ('s06d,s02d,s01d,s05d,s05d,s04d,s03d,s02d,s01d,d03d,d02d,d01d'.indexOf(forecast.weather.icon) >= 0) icon = 'ico-07';
-			//
-			forecasts.push({
-				timestamp:      forecast.ts,
-				description:    forecast.weather.description,
-				pres:           forecast.pres,
-				humidity:       forecast.rh,
-				wind_direction: forecast.wind_cdir_full,
-				wind_speed:     forecast.wind_spd,
-				temp_avg_c:     forecast.temp,
-				temp_max_app_c: forecast.app_max_temp,
-				temp_min_app_c: forecast.app_min_temp,
-				temp_avg_f:     celsiusToFahrenheit(forecast.temp),
-				temp_max_app_f: celsiusToFahrenheit(forecast.app_max_temp),
-				temp_min_app_f: celsiusToFahrenheit(forecast.app_min_temp),
-				icon:           icon,
-			});
-		}
-
-		// 
-		return {
-			city_name:    pr.city_name,
- 			lon:          pr.lon,
- 			timezone:     pr.timezone,
- 			lat:          pr.lat,
- 			country_code: pr.country_code,
- 			state_code:   pr.state_code,
- 			timestamp:    Math.floor(Date.now() / 1000),
- 			forecasts:    forecasts
-		};
-	}
-	return {};
 }

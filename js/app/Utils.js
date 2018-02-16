@@ -1,6 +1,6 @@
 /**
  * Utils.js
- * version 0.9
+ * version 0.91
  */
 var Utils = {
 	/**
@@ -16,7 +16,7 @@ var Utils = {
  	 * Convert celsius to fahrenheit
  	 * two decimal places
  	 * celsius (Number)
- 	 * return (Number)
+ 	 * return (String)
  	 */
 	celsiusToFahrenheit(celsius) {
 		return (celsius * 9/5 + 32).toFixed(2);

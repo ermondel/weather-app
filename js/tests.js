@@ -98,3 +98,55 @@ function utils_debug() {
     */
 }
 
+function weatherbit_debug() {
+    /*
+    const example = {  
+             "data":[  
+                {  
+                   "wind_cdir":"NE",
+                   "rh":72,
+                   "wind_spd":7,
+                   "pop":30,
+                   "wind_cdir_full":"northeast",
+                   "slp":1016.91,
+                   "app_max_temp":26.64,
+                   "pres":1003,
+                   "dewpt":17.7,
+                   "snow":0,
+                   "snow_depth":0,
+                   "uv":2,
+                   "wind_dir":45,
+                   "weather":{  
+                      "icon":"c04d",
+                      "code":"804",
+                      "description":"Overcast clouds"
+                   },
+                   "ts":1504418400,
+                   "max_temp":27.8,
+                   "app_min_temp":16.96,
+                   "precip":5.2,
+                   "max_dhi":285.5,
+                   "datetime":"2017-08-28",
+                   "temp":23,
+                   "min_temp":19,
+                   "clouds":100,
+                   "vis":10
+                },
+             ],
+             "city_name":"Raleigh",
+             "lon":"-78.63861",
+             "timezone":"America\/New_York",
+             "lat":"35.7721",
+             "country_code":"US",
+             "state_code":"NC"
+          };
+    console.log(Weatherbit.convertWeatherbit(example, Utils.celsiusToFahrenheit));
+    */
+    /*
+    console.log(Weatherbit.getWeatherbitURL('kiev'));
+    console.log(Weatherbit.getWeatherbitURL('lviv'));
+    console.log(Weatherbit.getWeatherbitURL(null, 38.123, -78.543));
+    console.log(Weatherbit.getWeatherbitURL(null, 123.77, 456.122));
+    */
+}
+
