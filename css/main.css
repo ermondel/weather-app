@@ -1,6 +1,6 @@
 /**
  * main.css
- * v 0.5
+ * v 0.6
  */
 
 /* Fonts
@@ -36,21 +36,25 @@ form .left { flex-grow: 1; margin-bottom: 25px; }
 border-radius: 4px 0px 0px 4px; -moz-border-radius: 4px 0px 0px 4px; -webkit-border-radius: 4px 0px 0px 4px; }
 
 /**
- * favorite button
+ * favorite checkbox
  */
-#search-box #keep-btn { font-size: 2em; /* padding: 0 0.6em; */ width: 60px; text-align: center; background-color: white; color: white;  
-border-radius: 0px 4px 4px 0px; -moz-border-radius: 0px 4px 4px 0px; -webkit-border-radius: 0px 4px 4px 0px; }
-#search-box #keep-btn.passive,
-#search-box #keep-btn.active { cursor: pointer; }
-#search-box #keep-btn.passive:before { content: "\2606"; color: #2e3d49; }
-#search-box #keep-btn.passive:hover:before { content: "\2605"; color: #2e3d49; }
-#search-box #keep-btn.active:before { content: "\2605"; color: #2e3d49; }
+#search-box #favorite { color: #2e3d49; text-align: center; padding: 0.2em 0.6em;
+font-size: 2em; background-color: white; cursor: pointer;
+	border-radius: 0px 4px 4px 0px; 
+	-moz-border-radius: 0px 4px 4px 0px; 
+	-webkit-border-radius: 0px 4px 4px 0px; }
+#search-box #favorite:hover { background-color: #f4f4f4; }
+#search-box #favorite span {}
+#search-box #favorite input { display: none; }
+#search-box #favorite input[type=checkbox] + span:before { content: "\2606"; }
+#search-box #favorite input[type=checkbox]:checked + span:before { content: "\2605"; }
 
 /**
  * options box
  */
 #options #options-period { display: flex; flex-wrap: wrap; margin-bottom: 35px; }
 #options #options-unit { display: flex; flex-wrap: wrap; }
+
 #options .common-radio { display: block; text-align: center; }
 #options .common-radio input { display: none; }
 #options .common-radio span { display: block; color: #ffffff; cursor: pointer; background-color: #3980AD; width: 120px; 
