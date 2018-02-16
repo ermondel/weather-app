@@ -1,6 +1,6 @@
 /**
  * Keeper.js
- * version 1.1
+ * version 1.5
  * format for storing information about the city (Object)
  *  - city_name
  *  - lon
@@ -66,7 +66,19 @@ var Keeper = {
 		}
 	},
 
-	// search by type (favorites or history)
+	/**
+	 * Add to local storage is history and display history on page
+	 * v (Object) city description in app native format
+	 */
+	addToHistoryKeeper(v) {
+		this.addToKeeper(v, 'history');
+		this.displayKeep('history', this.toHtmlKeep('history'));
+	},
+
+	/**
+	 * Search by type (favorites or history) ...
+	 * type (String) favorites or history
+	 */
 	searchInKeeper(type, k, v, k2, v2) {
 		if (this.KeeperData.hasOwnProperty(type) && k && v) for (let i = 0; i < this.KeeperData[type].length; i++) {
 			const data = this.KeeperData[type][i];
@@ -88,7 +100,7 @@ var Keeper = {
 	 * Toggle city in local storage (favorites only)
 	 * v (Object) city description in app native format
 	 */
-	toggleFavorite(v) {
+	toggleFavoriteKeeper(v) {
 		if (this.KeeperAv && v && v.city_name) {
 			const type = 'favorites';
 			const pos  = this.searchInKeeper(type, 'city_name', v.city_name);
@@ -106,15 +118,12 @@ var Keeper = {
 	},
 
 	/**
-	 * Set checkbox favorite to active state if city is in favorites
-	 * v (Object) city description in app native format
+	 * Check city by name in local storage (favorites only)
+	 * city_name (String)
 	 */
-	checkInFavoriteKeeper(v) {
-		if (v && v.city_name) {
-			if (this.searchInKeeper('favorites', 'city_name', v.city_name) >= 0) {
-				this.checkboxFavorite(true);
-				return true;
-			}
+	checkCityInFavoritesKeeper(city_name) {
+		if (city_name) {
+			return this.searchInKeeper('favorites', 'city_name', city_name) >=0 ? true : false;
 		}
 		return false;
 	},

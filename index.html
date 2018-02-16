@@ -18,14 +18,8 @@
 			<div class="left">
                 <div id="search-box">
 				    <label for="city" class="visuallyhidden">Choose the city of your interest</label>
-				    <input type="text" name="city" id="city" class="sb" placeholder="e.g. New York" required>
-                    <label id="favorite" class="sb">
-                        <input type="checkbox" name="favorite" value="1" id="keep-checkbox">
-                        <span></span>
-                        <span class="visuallyhidden">favorite</span>
-                    </label>
+				    <input type="text" name="city" id="city" placeholder="e.g. New York" required>
                 </div>
-
 				<div id="options">
 					<div id="options-period">
 						<label class="common-radio">
@@ -58,7 +52,6 @@
         			</div>
         		</div>
 			</div>
-
 			<div class="right">
 				<input type="submit" value="Submit" id="submit">
 			</div>
@@ -66,9 +59,11 @@
 	</div>
 </header>
 
-<main id="main"></main>
+<main id="main">
+    <div id="main-inner"></div>
+</main>
 
-<aside>
+<aside id="aside">
     <div id="aside-inner">
         <h3>&#9733; Favorites</h3>
         <div id="keep-favotite-box"></div>
@@ -84,5 +79,6 @@
 <script src="js/app/Weatherbit.js"></script>
 <script src="js/tests.js"></script>
 <script src="js/app/Weather.js"></script>
+
 </body>
 </html>

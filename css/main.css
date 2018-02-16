@@ -1,6 +1,6 @@
 /**
  * main.css
- * v 0.6
+ * v 0.82
  */
 
 /* Fonts
@@ -13,7 +13,8 @@ body { font-family: Arial, sans-serif; font-size: 14px; color: black; background
 
 /* visuallyhidden by Richard Kalehoff
    ========================================================================== */
-.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap; }
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; 
+overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap; }
 
 /* Header
    ========================================================================== */
@@ -31,23 +32,8 @@ form .left { flex-grow: 1; margin-bottom: 25px; }
  * search box
  */
 #search-box { display: flex; margin-bottom: 25px; }
-#search-box .sb { display: block; border: none; margin: 0; padding: 0; }
-#search-box #city { padding: 1em 0% 1em 2%; flex-grow: 1;
-border-radius: 4px 0px 0px 4px; -moz-border-radius: 4px 0px 0px 4px; -webkit-border-radius: 4px 0px 0px 4px; }
-
-/**
- * favorite checkbox
- */
-#search-box #favorite { color: #2e3d49; text-align: center; padding: 0.2em 0.6em;
-font-size: 2em; background-color: white; cursor: pointer;
-	border-radius: 0px 4px 4px 0px; 
-	-moz-border-radius: 0px 4px 4px 0px; 
-	-webkit-border-radius: 0px 4px 4px 0px; }
-#search-box #favorite:hover { background-color: #f4f4f4; }
-#search-box #favorite span {}
-#search-box #favorite input { display: none; }
-#search-box #favorite input[type=checkbox] + span:before { content: "\2606"; }
-#search-box #favorite input[type=checkbox]:checked + span:before { content: "\2605"; }
+#search-box #city { border: none; padding: 1em 0% 1em 2%; flex-grow: 1; 
+border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 
 /**
  * options box
@@ -117,12 +103,29 @@ aside:hover #main-btn .over { display: block; }
 /**
  * button aside
  */
-#main-btn { position: absolute; top: 40%; right: 0; margin-right: 2px; font-size: 2em; color: #2e3d49; }
+#main-btn { position: absolute; top: 198px; right: 0; margin-right: 2px; font-size: 2em; color: #2e3d49; }
 #main-btn .over { display: none; }
 
-/* Forecasts
+/* Main content
    ========================================================================== */
-.forecasts { width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
+#main-inner { margin-left: 35px; }
+
+/**
+ * city name and favorite checkbox
+ */
+#forecast-header { width: 96%; display: flex; justify-content: center; align-items: flex-start; margin: 25px 0 25px 0; }
+#forecast-header h1 { margin: 0; padding: 0; font-weight: normal; color: #2e3d49; font-size: 2.5em; margin-right: 16px; }
+#forecast-header label { color: #2e3d49; text-align: center; padding: 0.2em 0.6em;
+font-size: 2em; background-color: white; cursor: pointer; }
+#forecast-header label input,
+#forecast-header label span span { display: none; }
+#forecast-header label input[type=checkbox] + span:before { content: "\2606"; }
+#forecast-header label input[type=checkbox]:checked + span:before { content: "\2605"; }
+
+/**
+ * forecasts
+ */
+#forecasts { width: 100%; display: flex; flex-direction: column; align-items: center; }
 .forecast { padding: 23px; border: 1px solid #E0E0E0; max-width: 300px; font-size: 1.2em; margin-bottom: 25px;
 	-webkit-border-radius: 5px;
 	   -moz-border-radius: 5px;
@@ -142,18 +145,21 @@ aside:hover #main-btn .over { display: block; }
 /**
  * @media
  */
-@media screen and (min-width: 745px) {
-	.forecasts { flex-flow: row wrap; }
-	.forecast { margin: 0px 12px 25px 12px; }
+@media screen and (min-width: 755px) {
+	#forecasts { flex-flow: row wrap; width: 720px; margin-left: auto; margin-right: auto; }
+	.forecast { margin-right: 12px; }
+	#forecast-header { width: 720px; margin-left: auto; margin-right: auto; }
 }
-@media screen and (min-width: 1080px) {
-	.forecasts { width: 1080px; margin-left: auto; margin-right: auto; }
-	.forecast { margin: 0px 12px 25px 0px; }
+@media screen and (min-width: 1120px) {
+	#forecasts { width: 1085px; }
+	#forecast-header { width: 1085px; }
 }
 
 /* Errors messages
    ========================================================================== */
+/*
 .city-val-error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; 
 background: url('../img/error-city-name.png') no-repeat top center; }   
 .error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; 
 background: url('../img/error.png') no-repeat top center; }
+*/

@@ -1,22 +1,25 @@
 /**
  * Weather.js
- * version 0.5
+ * version 0.54
  */
 var Weather = {
-	APPNAME        : 'weather-app',  // app name (for keys)
-	cityInput      : 'city',         // input, city name
-	forecast       : {},             // forecast (in native app format) to display
-	forecastsBox   : 'main',         // id of block for forecasts
-	forecastsLimit : 7,              // default forecasts limit to show in days
-	forecastUnit   : 'celsius',      // default forecasts units to show (celsius or fahrenheit)
-	forecastCache  : [],             // forecast cache (to save a fetch queries)
-	forecastCacheExpiry : 43200,     // forecast cache expiry
+	APPNAME        : 'weather-app',   // app name (for keys)
+	formID         : 'form',          // form
+	asideID        : 'aside-inner',   // favorites and history
+	mainID         : 'main-inner',    // main content
+	cityInputID    : 'city',          // input for enter city name
+	cityInput      : null,            // input dom element
+	forecast       : {},              // forecast (in native app format) to display
+	forecastsLimit : 7,               // default forecasts limit to show in days
+	forecastUnit   : 'celsius',       // default forecasts units to show (celsius or fahrenheit)
+	forecastCache  : [],              // forecast cache (to save a fetch queries)
+	forecastCacheExpiry : 43200,      // forecast cache expiry
 
 	/**
 	 * setup
 	 */
 	setup() {
-		this.cityInput = document.getElementById(this.cityInput) || '';
+		this.cityInput = document.getElementById(this.cityInputID);
 		this.addEvents();
 		this.initKeeper(this.APPNAME);
 	},
@@ -64,23 +67,40 @@ var Weather = {
 
 		// debug
 		this.forecast = this.convertWeatherbit(forecast_example(), this.celsiusToFahrenheit);
-		this.forecastCache.push(this.forecast);
+		this.forecastCache.push(this.forecast);  // add city to forecast cache
+		this.addToHistoryKeeper(this.forecast);  // add city to forecast history
 		this.showForecast();
 	},
 
 	/**
-	 * show forecast on page
+	 * Show on page 
+	 *  block with city name and favorite checkbox
+	 *  blocks of forecast by days
 	 */
 	showForecast() {
 		const length = this.forecast.forecasts ? this.forecast.forecasts.length : 0;
 		const limit  = length <= this.forecastsLimit ? length : this.forecastsLimit;
 
 		if (length) {
-			const box = document.getElementById(this.forecastsBox);
-			box.innerHTML = '';
-			box.insertAdjacentHTML('afterbegin', '<div class="forecasts">' + 
-				this.forecast.forecasts.slice(0, limit).map(this.blockForecast, this).join('') + '</div>');
+			const main   = document.getElementById(this.mainID);
+			let content  = '';
+			content += '<div id="forecast-header">' + this.headerForecast(this.forecast.city_name) + '</div>';
+			content += '<div id="forecasts">' + this.forecast.forecasts.slice(0, limit).map(this.blockForecast, this).join('') + '</div>';
+			main.innerHTML = '';
+			main.insertAdjacentHTML('afterbegin', content);
 		}
+	},
+
+	/**
+	 * html block of header forecast (city name and favorite checkbox)
+	 * city_name (String)
+	 * return (String)
+	 */
+	headerForecast(city_name) {
+		const checked = this.checkCityInFavoritesKeeper(city_name) ? ' checked' : '';
+		return '<label><input type="checkbox" name="favorite" value="1" id="keep-checkbox"'+ checked +'>' + 
+		'<span><span>favorite city</span></span></label>' + 
+		'<h1>' + city_name + '</h1>';
 	},
 
 	/**
@@ -116,9 +136,6 @@ var Weather = {
 			if (e.target.name === 'unit') this.forecastUnit = e.target.value;
 			this.showForecast();
 		}
-		if (e.target.type === 'checkbox') {
-			console.log(this.APPNAME, 'checkbox');
-		}
 	},
 
 	/**
@@ -126,11 +143,12 @@ var Weather = {
 	 * e (Object) event
 	 */
 	onSubmitForm(e) {
+		e.preventDefault();
 		this.loadForecast(this.cityInput.value);
 	},
 
 	/**
-	 * handler on click keep block
+	 * handler on click keep block (favorites and history)
 	 * e (Object) event
 	 */
 	onClickKeep(e) {
@@ -140,18 +158,31 @@ var Weather = {
 	},
 
 	/**
+	 * handler on click main block (forecast)
+	 * e (Object) event
+	 */
+	onClickMain(e) {
+		if (e.target.type === 'checkbox') {
+			if (this.forecast) {
+				this.toggleFavoriteKeeper(this.forecast);
+			}
+		}
+	},
+
+	/**
 	 * Add app events
 	 */
 	addEvents() {
-		const form = document.getElementById('form');         // form, city name for forecast
-		const keep = document.getElementById('aside-inner');  // block, keeps favorites and history
+		const form = document.getElementById(this.formID);
+		const keep = document.getElementById(this.asideID);
+		const main = document.getElementById(this.mainID);
 
 		if (form && keep) {
-	  		form.addEventListener('change', e => { Weather.onChangeForm(e); });
-	  		form.addEventListener('submit', e => { e.preventDefault(); Weather.onSubmitForm(e); });
-	  		keep.addEventListener('click', e => { Weather.onClickKeep(e); });
-	  	} else {
-	  		console.log('Weather app:', 'form or keep block not found on page.');
+	  		form.addEventListener('change', this.onChangeForm.bind(this));
+	  		form.addEventListener('submit', this.onSubmitForm.bind(this));
+
+	  		keep.addEventListener('click', this.onClickKeep.bind(this));
+	  		main.addEventListener('click', this.onClickMain.bind(this));
 	  	}
 	},
 };
