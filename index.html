@@ -76,73 +76,8 @@
 </aside>
 
 <!-- <script src="js/app.js"></script> -->
+<script src="js/app/Utils.js"></script>
 <script src="js/app/Keeper.js"></script>
-<script type="text/javascript">
-    // unit tests -----------------------------------------------------------------------------
-
-    Keeper.initKeeper('weather-app');
-    // console.log(Keeper.KeeperData);
-
-    // test
-    const kiev = {
-        city_name: 'Kiev',
-        lon: '111',
-        timezone: 'qwe',
-        lat: '222',
-        country_code: 'UA',
-        state_code: '01',
-    };
-    const lviv = {
-        city_name: 'Lviv',
-        lon: '333',
-        timezone: 'asd',
-        lat: '444',
-        country_code: 'UA',
-        state_code: '02',
-    };
-    const san_francisco = {
-        city_name: 'San Francisco',
-        lon: '555',
-        timezone: 'zxc',
-        lat: '666',
-        country_code: 'UA',
-        state_code: '03',
-    };
-
-    /*
-    Keeper.addToKeeper(kiev, 'favorites');
-    Keeper.addToKeeper(lviv, 'favorites');
-    Keeper.addToKeeper(san_francisco, 'favorites');
-
-    Keeper.addToKeeper(kiev, 'history');
-    Keeper.addToKeeper(lviv, 'history');
-    Keeper.addToKeeper(san_francisco, 'history');
-    */
-    /*
-    console.log(Keeper.searchInKeeper('favorites', 'city_name', 'kiev'));
-    console.log(Keeper.searchInKeeper('favorites', 'lon', '333', 'lat', '444'));
-    console.log(Keeper.searchInKeeper('favorites', 'lat', '666'));
-    console.log(Keeper.searchInKeeper('favorites', 'city_name', 'odessa'));
-    */
-    // console.log(Keeper.checkInFavoriteKeeper(kiev));
-    // console.log(Keeper.checkInFavoriteKeeper(lviv));
-    // console.log(Keeper.checkInFavoriteKeeper(san_francisco));
-    /*
-    Keeper.toggleFavorite(kiev);
-    console.log(Keeper.KeeperData);
-    */
-    /*
-    Keeper.toggleFavorite(lviv);
-    console.log(Keeper.KeeperData);
-    */
-    /*
-    Keeper.toggleFavorite(san_francisco);
-    console.log(Keeper.KeeperData);
-    */
-    // Keeper.displayAllKeep();
-
-    // Keeper.clearAllKeep();
-    
-</script>
+<script src="js/tests.js"></script>
 </body>
 </html>

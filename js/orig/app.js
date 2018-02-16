@@ -65,33 +65,6 @@ function getFromCache(key, value) {
 }
 
 /**
- * Validate city name (String)
- * return Boolean
- */
-function validateCityName(str) {
-	return str.search(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/) >= 0 ? true : false;
-}
-
-/**
- * Convert celsius to fahrenheit
- * return Number
- */
-function celsiusToFahrenheit(celsius) {
-	return (celsius * 9/5 + 32).toFixed(2);
-}
-
-/**
- * Format date like 08 February 2018 from timestamp
- * return String
- */
-function formatDate(timestamp) {
-	if (!timestamp) return '';
-	const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-	const date = new Date(timestamp*1000);
-	return date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
-}
-
-/**
  * Convert forecast from inner storage format to html
  * @required properties
  *  forecastToDisplay: inner storage (Array/Object)
