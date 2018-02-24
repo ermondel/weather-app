@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ermondel/weather-app/issues"
   },
-  "homepage": "https://github.com/ermondel/weather-app#readme"
+  "homepage": "https://github.com/ermondel/weather-app#readme",
+  "dependencies": {
+    "push-dir": "^0.4.1"
+  }
 }
