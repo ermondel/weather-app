@@ -1,6 +1,6 @@
 /**
  * main.css
- * v 0.82
+ * v 0.9
  */
 
 /* Fonts
@@ -18,8 +18,10 @@ overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowra
 
 /* Header
    ========================================================================== */
-header { background-color: #2e3d49; border-bottom: 1px solid #E0E0E0; -webkit-box-shadow: 0px 3px 10px 0px rgba(224,224,224,1); 
--moz-box-shadow: 0px 3px 10px 0px rgba(224,224,224,1); box-shadow: 0px 3px 10px 0px rgba(224,224,224,1); }
+header { background-color: #2e3d49; border-bottom: 1px solid transparent; 
+-webkit-box-shadow: 0px 1px 7px 0px rgba(0,0,0,0.6);
+-moz-box-shadow: 0px 1px 7px 0px rgba(0,0,0,0.6);
+box-shadow: 0px 1px 7px 0px rgba(0,0,0,0.6); }
 header #header-inner { width: 95%; margin-left: auto; margin-right: auto; }
 header #header-inner h1 { margin: 0px; padding: 30px 0px; font-weight: normal; color: white; }
 
@@ -34,6 +36,7 @@ form .left { flex-grow: 1; margin-bottom: 25px; }
 #search-box { display: flex; margin-bottom: 25px; }
 #search-box #city { border: none; padding: 1em 0% 1em 2%; flex-grow: 1; 
 border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+#search-box #city:focus{ outline: 0; }
 
 /**
  * options box
@@ -45,6 +48,8 @@ border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 #options .common-radio input { display: none; }
 #options .common-radio span { display: block; color: #ffffff; cursor: pointer; background-color: #3980AD; width: 120px; 
 padding: 15px 10px; margin-bottom: 15px; margin-right: 7px; border-radius: 4px;  -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+#options .common-radio:focus { outline: 0; }
+#options .common-radio:focus span { background-color: #3980AD; }
 #options .common-radio span:hover { background-color: #3980AD; }
 #options .common-radio input[type=radio]:checked + span { background-color: #12a159; }
 
@@ -54,6 +59,7 @@ padding: 15px 10px; margin-bottom: 15px; margin-right: 7px; border-radius: 4px; 
 #submit { background-color: #15c26b; border: none; color: #ffffff; cursor: pointer; padding: 1em 4em; margin-bottom: 25px;
 text-transform: uppercase; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 #submit:hover { background-color: #12a159; }
+#submit:focus{ outline: 0; background-color: #12a159; }
 
 /**
  * @media
@@ -88,17 +94,18 @@ aside:hover #main-btn .over { display: block; }
 /**
  * favorites and history
  */
-#aside-inner { padding: 10px; }
-#aside-inner h3 { margin: 0; padding: 0; font-weight: normal; color: slategrey; font-size: 2.1em; margin-bottom: 0.4em; }
+#aside-inner { padding: 10px 0px 10px 10px; margin-right: 17px; }
+#aside-inner .aside-toolbar { width: 100%; overflow: hidden; margin-bottom: 0.4em; }
+#aside-inner .aside-toolbar button { border: 0; margin: 0; padding: 0; float: right; 
+padding: 5px 15px; cursor: pointer; background-color: whitesmoke; color: #2e3d49;
+border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+#aside-inner .aside-toolbar button:disabled { background-color: white; color: grey; color: white; cursor: default; }
+#aside-inner .aside-toolbar button:not(:disabled):hover { background-color: yellowgreen; color: white; }
+#aside-inner .aside-toolbar h3 { margin: 0; padding: 0; font-weight: normal; color: slategrey; font-size: 1.5em; float: left; }
 #aside-inner ul { margin: 0; padding: 0; list-style: none; font-size: 1.2em; }
-#aside-inner #keep-favotite-box { margin-bottom: 3em; }
-#aside-inner ul li { padding: 0.2em 0 0.2em 0.3em; cursor: pointer; margin-right: 0.4em; }
-#aside-inner ul li:hover {
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	background-color: yellowgreen;
-}
+#aside-inner #favorites { margin-bottom: 3em; }
+#aside-inner ul li { padding: 0.3em 0 0.3em 0.3em; cursor: pointer; color: #2e3d49; }
+#aside-inner ul li:hover { background-color: yellowgreen; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; color: white; }
 
 /**
  * button aside
@@ -119,8 +126,8 @@ aside:hover #main-btn .over { display: block; }
 font-size: 2em; background-color: white; cursor: pointer; }
 #forecast-header label input,
 #forecast-header label span span { display: none; }
-#forecast-header label input[type=checkbox] + span:before { content: "\2606"; }
-#forecast-header label input[type=checkbox]:checked + span:before { content: "\2605"; }
+#forecast-header label input[type=checkbox] + span:before { content: "\2606";}
+#forecast-header label input[type=checkbox]:checked + span:before {content: "\2605"; }
 
 /**
  * forecasts
@@ -157,9 +164,4 @@ font-size: 2em; background-color: white; cursor: pointer; }
 
 /* Errors messages
    ========================================================================== */
-/*
-.city-val-error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; 
-background: url('../img/error-city-name.png') no-repeat top center; }   
-.error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; 
-background: url('../img/error.png') no-repeat top center; }
-*/
+#forecast-error { text-align: center; margin-top: 50px; font-size: 1.2em; padding-top: 150px; color: #2e3d49; }

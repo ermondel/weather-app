@@ -14,38 +14,38 @@
 <header>
 	<div id="header-inner">
 		<h1>Weather forecast for the city up to 2 weeks</h1>
-		<form action="#" id="form">
+		<form id="form">
 			<div class="left">
                 <div id="search-box">
-				    <label for="city" class="visuallyhidden">Choose the city of your interest</label>
+				    <label for="city" class="visuallyhidden" tabindex="0">Choose the city of your interest</label>
 				    <input type="text" name="city" id="city" placeholder="e.g. New York" required>
                 </div>
 				<div id="options">
 					<div id="options-period">
-						<label class="common-radio">
+						<label class="common-radio" tabindex="0">
             				<input type="radio" required name="period" value="1">
             				<span>day</span>
         				</label>
-        				<label class="common-radio">
-            				<input type="radio" required name="period" value="3">
+        				<label class="common-radio" tabindex="0">
+            				<input type="radio" required name="period" value="3" checked>
             				<span>3 days</span>
         				</label>
-        				<label class="common-radio">
-            				<input type="radio" required name="period" value="7" checked>
+        				<label class="common-radio" tabindex="0">
+            				<input type="radio" required name="period" value="7">
             				<span>week</span>
         				</label>
-        				<label class="common-radio">
+        				<label class="common-radio" tabindex="0">
             				<input type="radio" required name="period" value="14">
             				<span>2 weeks</span>
         				</label>
         			</div>
 
         			<div id="options-unit">
-        				<label class="common-radio">
+        				<label class="common-radio" tabindex="0">
             				<input type="radio" required name="unit" value="celsius" checked>
             				<span>Celsius</span>
         				</label>
-        				<label class="common-radio" id="testt">
+        				<label class="common-radio" tabindex="0">
             				<input type="radio" required name="unit" value="fahrenheit">
             				<span>Fahrenheit</span>
         				</label>
@@ -53,7 +53,7 @@
         		</div>
 			</div>
 			<div class="right">
-				<input type="submit" value="Submit" id="submit">
+				<input type="submit" value="Submit" id="submit" tabindex="0">
 			</div>
 		</form>
 	</div>
@@ -65,20 +65,21 @@
 
 <aside id="aside">
     <div id="aside-inner">
-        <h3>&#9733; Favorites</h3>
-        <div id="keep-favotite-box"></div>
+        <div class="aside-toolbar">
+            <h3>&#9733; Favorites</h3>
+            <button name="favoritesClearAll" id="favorites-clear-all">Clear all</button>
+        </div>
+        <div id="favorites"></div>
 
-        <h3>&#10226; History</h3>
-        <div id="keep-history-box"></div>
+        <div class="aside-toolbar">
+            <h3>&#10226; History</h3>
+            <button name="historyClearAll" id="history-clear-all">Clear all</button>
+        </div>
+        <div id="history"></div>
     </div>
     <div id="main-btn"><span class="out">&#10097;</span><span class="over">&#10096;</span></div>
 </aside>
 
-<script src="js/app/Utils.js"></script>
-<script src="js/app/Keeper.js"></script>
-<script src="js/app/Weatherbit.js"></script>
-<script src="js/tests.js"></script>
-<script src="js/app/Weather.js"></script>
-
+<script src="./index.js"></script>
 </body>
 </html>
