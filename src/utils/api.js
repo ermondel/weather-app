@@ -7,8 +7,8 @@ const BASE_URL = 'api.weatherbit.io/v2.0/forecast/daily';
 
 const get = query => {
 	const protocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
-	const url = `${protocol}${BASE_URL}?key=${API_KEY}&lang=en&units=M&days=16${query}`;
-	// const url = 'http://localhost:8080/tsttmp/myjson/weather-app/daily.json';
+	// const url = `${protocol}${BASE_URL}?key=${API_KEY}&lang=en&units=M&days=16${query}`;
+	const url = 'http://localhost:8080/tsttmp/myjson/weather-app/daily.json';
 
 	return fetch(url).then(response => {
 		if (response.status == 200) {
