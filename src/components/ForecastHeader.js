@@ -1,6 +1,6 @@
 /**
  * ForecastHeader.js
- * version 0.8
+ * version 1.0
  */
 class ForecastHeader {
 	constructor(props) {
@@ -23,7 +23,7 @@ class ForecastHeader {
 	render() {
 		if (this.state.valid && this.state.data.city_name) {
 			this.container.innerHTML = `
-				<label><input type="checkbox" name="favorite" id="favorite">
+				<label><input type="checkbox" name="favorite" id="favorite"${(this.state.favorite ? ' checked' : '')}>
 				<span><span>favorite city</span></span></label>
 				<h1>${this.state.data.city_name}</h1>`;
 			return this.container;

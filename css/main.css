@@ -1,6 +1,6 @@
 /**
  * main.css
- * v 0.9
+ * v 1.0
  */
 
 /* Fonts
@@ -88,20 +88,20 @@ aside { position: absolute; top: 0; bottom: 0; left: -263px; width: 280px; backg
 	box-shadow: 1px 0px 10px 0px rgba(0,0,0,0.75);
 }
 aside:hover { left: 0px; }
-aside:hover #main-btn .out { display: none; }
-aside:hover #main-btn .over { display: block; }
+aside:hover #aside-marker .out { display: none; }
+aside:hover #aside-marker .over { display: block; }
 
 /**
  * favorites and history
  */
 #aside-inner { padding: 10px 0px 10px 10px; margin-right: 17px; }
-#aside-inner .aside-toolbar { width: 100%; overflow: hidden; margin-bottom: 0.4em; }
-#aside-inner .aside-toolbar button { border: 0; margin: 0; padding: 0; float: right; 
+#aside-inner .topbox { width: 100%; overflow: hidden; margin-bottom: 0.4em; }
+#aside-inner .topbox button { border: 0; margin: 0; padding: 0; float: right; 
 padding: 5px 15px; cursor: pointer; background-color: whitesmoke; color: #2e3d49;
 border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
-#aside-inner .aside-toolbar button:disabled { background-color: white; color: grey; color: white; cursor: default; }
-#aside-inner .aside-toolbar button:not(:disabled):hover { background-color: yellowgreen; color: white; }
-#aside-inner .aside-toolbar h3 { margin: 0; padding: 0; font-weight: normal; color: slategrey; font-size: 1.5em; float: left; }
+#aside-inner .topbox button:disabled { background-color: white; color: grey; color: white; cursor: default; }
+#aside-inner .topbox button:not(:disabled):hover { background-color: yellowgreen; color: white; }
+#aside-inner .topbox h3 { margin: 0; padding: 0; font-weight: normal; color: slategrey; font-size: 1.5em; float: left; }
 #aside-inner ul { margin: 0; padding: 0; list-style: none; font-size: 1.2em; }
 #aside-inner #favorites { margin-bottom: 3em; }
 #aside-inner ul li { padding: 0.3em 0 0.3em 0.3em; cursor: pointer; color: #2e3d49; }
@@ -110,8 +110,8 @@ border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /**
  * button aside
  */
-#main-btn { position: absolute; top: 198px; right: 0; margin-right: 2px; font-size: 2em; color: #2e3d49; }
-#main-btn .over { display: none; }
+#aside-marker { position: absolute; top: 198px; right: 0; margin-right: 2px; font-size: 2em; color: #2e3d49; }
+#aside-marker .over { display: none; }
 
 /* Main content
    ========================================================================== */
