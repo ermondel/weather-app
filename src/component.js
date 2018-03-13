@@ -11,6 +11,7 @@ class Component {
 	}
 
 	updateState(nextState) {
+		this.onBeforeUpdate(nextState);
 		this.state = Object.assign({}, this.state, nextState);
 		this.onAfterUpdate(nextState);
 		return this.display();
@@ -44,7 +45,9 @@ class Component {
 	//
 	render() {}
 
-	onAfterUpdate() {}
+	onAfterUpdate(nextState) {}
+
+	onBeforeUpdate(nextState) {}
 }
 
 export default Component;

@@ -1,10 +1,11 @@
 /**
  * Forecast Header Component
- * version 0.6
+ * version 0.8
  * props
  *	valid
  *	city
  *	favorite
+ *	waiting
  *	onAddFavorite
  *	onDelFavorite
  */
@@ -35,11 +36,12 @@ class ForecastHeader extends Component {
 	}
 
 	render() {
-		const { valid } = this.props;
-		const city      = this.props.city || '';
-		const favorite  = this.props.favorite || false;
+		const { valid }   = this.props;
+		const { waiting } = this.props;
+		const city        = this.props.city || '';
+		const favorite    = this.props.favorite || false;
 
-		if (valid && city) {
+		if (valid && city && !waiting) {
 			return `
 			<label><input type="checkbox" name="favorite" id="favorite"${(favorite ? ' checked' : '')}>
 			<span><span>favorite city</span></span></label>

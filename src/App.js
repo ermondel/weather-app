@@ -1,6 +1,6 @@
 /**
  * App
- * version 0.86
+ * version 0.91
  * props
  *	container
  */
@@ -21,6 +21,7 @@ class App extends Component {
 			isCelsius : true,
 			forecast  : {},
 			valid     : true,
+			waiting   : false,
 			favorites : JSON.parse(localStorage.getItem('weather-app-favorites')) || [],
 			history   : JSON.parse(localStorage.getItem('weather-app-history')) || [],
 		};
@@ -55,11 +56,15 @@ class App extends Component {
 
 	init() {
 		const city = cityFromLoc();
-		city ? this.forecast(city) : this.updateState();
+		city ? this.updateState({ city, waiting: true }) : this.updateState();
 	}
 
 	onSubmit(city) {
-		this.forecast(city);
+		this.updateState({ city, waiting: true });
+	}
+
+	onClickStorage(city) {
+		this.updateState({ city, waiting: true });
 	}
 
 	onChangePeriod(period) {
@@ -96,10 +101,6 @@ class App extends Component {
 		this.updateState({ history: [] });
 	}
 
-	onClickStorage(city) {
-		this.forecast(city);
-	}
-
 	onWindowUnload() {
 		let { favorites } = this.state;
 		let { history }   = this.state;
@@ -111,19 +112,26 @@ class App extends Component {
 		localStorage.setItem('weather-app-history', JSON.stringify(history));
 	}
 
+	onBeforeUpdate(nextState) {
+		if (nextState && nextState.city) nextState.city = cityUppercase(nextState.city);
+	}
+
+	onAfterUpdate(nextState) {
+		if (nextState && nextState.city) this.forecast(nextState.city);
+	}
+
 	forecast(city) {
 		getForecast(city).then(forecast => {
 			const { history } = this.state;
-			city = cityUppercase(city);
 			history.indexOf(city) < 0 && history.unshift(city);
 			cityToLoc(city, `Weather app :: forecast for ${city}`);
 			document.title = `Forecast for ${city}`;
 
-			this.updateState({ valid: true, city, forecast, history });
+			this.updateState({waiting: false, valid: true, forecast, history });
 		}).catch(error => {
 			document.title = `No forecast available for ${city}`;
 
-			this.updateState({ valid: false, city});
+			this.updateState({waiting: false, valid: false});
 		});
 	}
 
@@ -135,11 +143,12 @@ class App extends Component {
 		const { forecast }  = this.state;
 		const { favorites } = this.state;
 		const { history }   = this.state;
+		const { waiting }   = this.state;
 		const favorite      = !!(favorites.indexOf(city)+1);
 
 		return [
 			this.searchForm.update({ city, period, isCelsius }),
-			this.forecastHost.update({ city, period, isCelsius, valid, forecast, favorite }),
+			this.forecastHost.update({ city, period, isCelsius, valid, forecast, favorite, waiting }),
 			this.storageHost.update({ favorites, history }),
 		];
 	}

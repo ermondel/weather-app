@@ -1,8 +1,8 @@
 /**
  * Forecast Host Component
- * version 0.4
- * @ ForecastData props valid, isCelsius, period, forecast
- * @ ForecastHeader props valid, city, favorite, onAddFavorite, onDelFavorite
+ * version 0.8
+ * @ ForecastHeader props valid, city, favorite, onAddFavorite, onDelFavorite, waiting
+ * @ ForecastData props valid, isCelsius, period, forecast, waiting
  */
 import Component from '../../Component';
 import ForecastDataComponent from './forecast.data.component';
@@ -16,8 +16,8 @@ class ForecastHost extends Component {
 		this.inner.id  = 'main-inner';
 		this.container    = document.createElement('main');
 		this.container.id = 'main';
-		this.forecastData   = new ForecastDataComponent(props);
 		this.forecastHeader = new ForecastHeaderComponent(props);
+		this.forecastData   = new ForecastDataComponent(props);
 	}
 
 	render() {

@@ -1,11 +1,12 @@
 /**
  * Forecast Data Component
- * version 0.4
+ * version 0.8
  * props
  *	valid
  *	isCelsius
  *	period
  *	forecast
+ *	waiting
  */
 import Component    from '../../Component';
 import DayForecast  from './dayforecast';
@@ -22,18 +23,23 @@ class ForecastData extends Component {
 		const { valid }     = this.props;
 		const { isCelsius } = this.props;
 		const { period }    = this.props;
+		const { waiting }   = this.props;
 		const forecasts     = this.props.forecast && this.props.forecast.data || null;
 
-		if (valid) {
-			if (forecasts) {
-				this.container.id = 'forecasts';
-				return forecasts.slice(0, period).map(data => DayForecast(data, isCelsius, weatherIcons)).join('');
-			}
-			return '';
+		if (valid && !waiting && forecasts) {
+			this.container.id = 'forecasts';
+			return forecasts.slice(0, period).map(data => DayForecast(data, isCelsius, weatherIcons)).join('');
+		}
+		if (waiting) {
+			this.container.id = 'forecast-loading';
+			return `<img src="${weatherIcons['forecast-loading.gif']}" alt="Loading">`;
+		}
+		if (!valid) {
+			this.container.id = 'forecast-error';
+			return `<img src="${weatherIcons['forecast-error.png']}" alt="No forecast available"><div>No forecast available.</div>`;
 		}
 
-		this.container.id = 'forecast-error';
-		return `<img src="${weatherIcons['forecast-error.png']}" alt="No forecast available"><div>No forecast available.</div>`;
+		return '';
 	}
 }
 
