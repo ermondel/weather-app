@@ -1,6 +1,6 @@
 /**
  * component.js
- * version 1.2
+ * version 1.4
  */
 class Component {
 	constructor(props) {

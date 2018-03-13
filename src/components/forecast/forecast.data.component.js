@@ -1,6 +1,6 @@
 /**
  * Forecast Data Component
- * version 0.2
+ * version 0.4
  * props
  *	valid
  *	isCelsius
@@ -22,7 +22,7 @@ class ForecastData extends Component {
 		const { valid }     = this.props;
 		const { isCelsius } = this.props;
 		const { period }    = this.props;
-		const forecasts     = this.props.forecast && this.props.forecast.data || [];
+		const forecasts     = this.props.forecast && this.props.forecast.data || null;
 
 		if (valid) {
 			if (forecasts) {

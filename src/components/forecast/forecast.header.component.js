@@ -1,6 +1,6 @@
 /**
  * Forecast Header Component
- * version 0.2
+ * version 0.6
  * props
  *	valid
  *	city
@@ -24,8 +24,13 @@ class ForecastHeader extends Component {
 
 		if (city) 
 		{
-			 e.target.checked && this.props.onAddFavorite(city);
-			!e.target.checked && this.props.onDelFavorite(city);
+			if (e.target.checked) 
+			{
+				this.props.onAddFavorite(city);
+			} else 
+			{
+				this.props.onDelFavorite(city);
+			}
 		}
 	}
 

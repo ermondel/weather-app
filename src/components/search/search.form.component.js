@@ -1,6 +1,6 @@
 /**
  * Search Form Component
- * version 0.4
+ * version 0.6
  * props
  *	onSubmit
  *	onChangePeriod
@@ -9,7 +9,7 @@
  *	period
  *	isCelsius
  */
-import Component from '../Component';
+import Component from '../../Component';
 
 class SearchForm extends Component {
 	constructor(props) {
