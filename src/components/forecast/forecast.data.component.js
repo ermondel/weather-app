@@ -1,6 +1,6 @@
 /**
  * Forecast Data Component
- * version 0.8
+ * version 1.0
  * props
  *	valid
  *	isCelsius
@@ -36,7 +36,7 @@ class ForecastData extends Component {
 		}
 		if (!valid) {
 			this.container.id = 'forecast-error';
-			return `<img src="${weatherIcons['forecast-error.png']}" alt="No forecast available"><div>No forecast available.</div>`;
+			return `<img src="${weatherIcons['forecast-error.jpg']}" alt="No forecast available"><div>No forecast available.</div>`;
 		}
 
 		return '';
