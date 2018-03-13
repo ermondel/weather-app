@@ -98,7 +98,11 @@ class App extends Component {
 
 	forecast(city) {
 		getForecast(city).then(forecast => {
-			cityToLoc(city, `Forecast for ${city}`);
+			const title = `Forecast for ${city}`;
+			
+			cityToLoc(city, title);
+			document.title = title;
+
 			this.updateState({ valid: true, city, forecast });
 		}).catch(error => {
 			this.updateState({ valid: false, city});
