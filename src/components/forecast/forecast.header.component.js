@@ -43,7 +43,7 @@ class ForecastHeader extends Component {
 			return `
 			<label><input type="checkbox" name="favorite" id="favorite"${(favorite ? ' checked' : '')}>
 			<span><span>favorite city</span></span></label>
-			<h1>${(city.charAt(0).toUpperCase() + city.slice(1))}</h1>`;
+			<h1>${city}</h1>`;
 		}
 		return '';
 	}

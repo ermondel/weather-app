@@ -13,7 +13,14 @@ export function cityToLoc(city, title) {
 	history.pushState({}, title, "?city=" + city.replace(' ', '_'));
 }
 
-
+/**
+ * Convert all words of city name to uppercase
+ */
+export function cityUppercase(city) {
+	city = city.split(' ');
+	for (let key in city) city[key] = city[key].charAt(0).toUpperCase() + city[key].slice(1);
+	return city.join(' ');
+}
 
 /**
  * The file corresponds to other files

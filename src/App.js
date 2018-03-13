@@ -1,13 +1,15 @@
 /**
  * App
- * version 0.8
+ * version 0.86
+ * props
+ *	container
  */
-import Component        from './component';
-import { getForecast }  from './api';
+import Component              from './component';
+import { getForecast }        from './api';
 import SearchFormComponent    from './components/search/search.form.component';
 import ForecastHostComponent  from './components/forecast/forecast.host.component';
 import StorageHostComponent   from './components/storage/storage.host.component';
-import { cityFromLoc, cityToLoc }  from './utils';
+import { cityFromLoc, cityToLoc, cityUppercase } from './utils';
 
 class App extends Component {
 	constructor(props) {
@@ -19,8 +21,8 @@ class App extends Component {
 			isCelsius : true,
 			forecast  : {},
 			valid     : true,
-			favorites : ['lviv', 'san francisco', 'san diego'],
-			history   : ['lviv', 'san francisco', 'san diego'],
+			favorites : JSON.parse(localStorage.getItem('weather-app-favorites')) || [],
+			history   : JSON.parse(localStorage.getItem('weather-app-history')) || [],
 		};
 
 		this.container = this.props.container;
@@ -47,6 +49,8 @@ class App extends Component {
 			onDelFavorite  : this.onDelFavorite.bind(this),
 			onDelHistory   : this.onDelHistory.bind(this),
 		});
+
+		window.addEventListener('unload', this.onWindowUnload.bind(this));
 	}
 
 	init() {
@@ -96,15 +100,29 @@ class App extends Component {
 		this.forecast(city);
 	}
 
+	onWindowUnload() {
+		let { favorites } = this.state;
+		let { history }   = this.state;
+
+		favorites = favorites.slice(-15); // favorites limit
+		history   = history.slice(-20);   // history limit
+
+		localStorage.setItem('weather-app-favorites', JSON.stringify(favorites));
+		localStorage.setItem('weather-app-history', JSON.stringify(history));
+	}
+
 	forecast(city) {
 		getForecast(city).then(forecast => {
-			const title = `Forecast for ${city}`;
-			
-			cityToLoc(city, title);
-			document.title = title;
+			const { history } = this.state;
+			city = cityUppercase(city);
+			history.indexOf(city) < 0 && history.unshift(city);
+			cityToLoc(city, `Weather app :: forecast for ${city}`);
+			document.title = `Forecast for ${city}`;
 
-			this.updateState({ valid: true, city, forecast });
+			this.updateState({ valid: true, city, forecast, history });
 		}).catch(error => {
+			document.title = `No forecast available for ${city}`;
+
 			this.updateState({ valid: false, city});
 		});
 	}
