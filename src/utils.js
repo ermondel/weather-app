@@ -1,4 +1,21 @@
 /**
+ * Get city name from search in browser address bar
+ */
+export function cityFromLoc() {
+	const city = new URLSearchParams(window.location.search).get('city') || '';
+	return city ? city.replace('_', ' ') : '';
+}
+
+/**
+ * Set city name to the browser address bar and history
+ */
+export function cityToLoc(city, title) {
+	history.pushState({}, title, "?city=" + city.replace(' ', '_'));
+}
+
+
+
+/**
  * The file corresponds to other files
  * search in other files and return the corresponding file.
  *  pack (Object) { file name to return: file names to search (separator ;) }

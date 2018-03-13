@@ -1,12 +1,13 @@
 /**
  * App
- * version 0.72
+ * version 0.8
  */
-import Component             from './component';
-import SearchFormComponent   from './components/search/search.form.component';
-import ForecastHostComponent from './components/forecast/forecast.host.component';
-import StorageHostComponent  from './components/storage/storage.host.component';
-import { getForecast }       from './api';
+import Component        from './component';
+import { getForecast }  from './api';
+import SearchFormComponent    from './components/search/search.form.component';
+import ForecastHostComponent  from './components/forecast/forecast.host.component';
+import StorageHostComponent   from './components/storage/storage.host.component';
+import { cityFromLoc, cityToLoc }  from './utils';
 
 class App extends Component {
 	constructor(props) {
@@ -49,7 +50,8 @@ class App extends Component {
 	}
 
 	init() {
-		this.updateState();
+		const city = cityFromLoc();
+		city ? this.forecast(city) : this.updateState();
 	}
 
 	onSubmit(city) {
@@ -96,6 +98,7 @@ class App extends Component {
 
 	forecast(city) {
 		getForecast(city).then(forecast => {
+			cityToLoc(city, `Forecast for ${city}`);
 			this.updateState({ valid: true, city, forecast });
 		}).catch(error => {
 			this.updateState({ valid: false, city});
