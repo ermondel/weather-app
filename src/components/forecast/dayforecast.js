@@ -1,6 +1,6 @@
 /**
  * Day Forecast
- * version 0.4
+ * version 0.8
  */
 import {filesManyToOne, D_Month_Y, CelsiusToFahrenheit} from '../../utils';
 
@@ -19,7 +19,7 @@ const DayForecast = (data, isCelsius = true, weatherIcons) => {
 	const temp_max = isCelsius ? data.max_temp + '°C' : CelsiusToFahrenheit(data.max_temp) + '°F';
 	const temp_min = isCelsius ? data.min_temp + '°C' : CelsiusToFahrenheit(data.min_temp) + '°F';
 
-	const icon = filesManyToOne(data.weather.icon, weather_icons_map)+'.jpg';
+	const icon = filesManyToOne(data.weather.icon, weather_icons_map)+'.png';
 
 	return `
 	<div class="forecast">
