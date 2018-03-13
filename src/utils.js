@@ -25,6 +25,6 @@ export function D_Month_Y(timestamp) {
 /**
  * Convert celsius to fahrenheit
  */
-export function temperatureCtoF(val) {
+export function CelsiusToFahrenheit(val) {
 	return (val * 9/5 + 32).toFixed(2);
 }

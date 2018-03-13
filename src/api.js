@@ -1,15 +1,17 @@
 /**
  * API weatherbit
- * version 1.4
+ * version 1.6
+ * return Object, see https://www.weatherbit.io/api/weather-forecast-16-day
  */
-const API_KEY  = '351954d3a30a4b60ad716f1c73cc43ee';
-const BASE_URL = 'api.weatherbit.io/v2.0/forecast/daily';
+const API_KEY      = '351954d3a30a4b60ad716f1c73cc43ee';
+const BASE_URL     = 'api.weatherbit.io/v2.0/forecast/daily';
 const CACHE_EXPIRY = 21600;
-var api_cache  = [];
+var api_cache      = [];
 
 const get = query => {
 	const protocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
-	const url = `${protocol}${BASE_URL}?key=${API_KEY}&lang=en&units=M&days=16${query}`;
+	// const url = `${protocol}${BASE_URL}?key=${API_KEY}&lang=en&units=M&days=16${query}`;
+	const url = 'http://localhost:8080/tsttmp/myjson/weather-app/daily.json';
 	
 	return fetch(url).then(response => {
 		if (response.status == 200) {
