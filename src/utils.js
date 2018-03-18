@@ -2,8 +2,11 @@
  * Get city name from search in browser address bar
  */
 export function cityFromLoc() {
-	const city = new URLSearchParams(window.location.search).get('city') || '';
-	return city ? city.replace('_', ' ') : '';
+	if (window.URLSearchParams) {
+		const city = new URLSearchParams(window.location.search).get('city') || '';
+		return city ? city.replace('_', ' ') : '';
+	}
+	return '';
 }
 
 /**
