@@ -1,6 +1,6 @@
 /**
  * Forecast Host Component
- * version 0.8
+ * version 1.0
  * @ ForecastHeader props valid, city, favorite, onAddFavorite, onDelFavorite, waiting
  * @ ForecastData props valid, isCelsius, period, forecast, waiting
  */

@@ -1,6 +1,6 @@
 /**
  * Forecast Header Component
- * version 0.8
+ * version 1.0
  * props
  *	valid
  *	city

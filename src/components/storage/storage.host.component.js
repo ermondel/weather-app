@@ -1,6 +1,6 @@
 /**
  * Storage Host Component
- * version 0.4
+ * version 1.0
  * @ StorageFavorites props favorites, onClickStorage, onDelFavorite
  * @ StorageHistory props history, onClickStorage, onDelHistory
  */

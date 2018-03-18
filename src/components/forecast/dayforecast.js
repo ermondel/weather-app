@@ -1,6 +1,6 @@
 /**
  * Day Forecast
- * version 0.8
+ * version 1.0
  */
 import {filesManyToOne, D_Month_Y, CelsiusToFahrenheit} from '../../utils';
 

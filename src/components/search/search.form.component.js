@@ -1,6 +1,6 @@
 /**
  * Search Form Component
- * version 0.6
+ * version 1.0
  * props
  *	onSubmit
  *	onChangePeriod
